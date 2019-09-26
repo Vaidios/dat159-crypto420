@@ -18,16 +18,22 @@ public class TCPClient {
 	
 	private String server;
 	private int port;
-	private DiffieHellmanKey key;
+	private long privateKey;
+	private int primitiveGen;
+	private long randomPrime;
 	
 	public TCPClient(String server, int port) {
 		this.server = server;
 		this.port = port;
-		this.key = new DiffieHellmanKey();
+		this.randomPrime = DiffieHellmanKey.getRandPrime();
+		this.primitiveGen = DiffieHellmanKey.getPrimitiveGen();
+		this.privateKey = DiffieHellmanKey.genPrivateKey();
 	}
 	
 	public void clientProcess() {
-		String msg = "TestMessege";
+		String msg = "" + this.randomPrime +
+				" " + this.primitiveGen +
+				" " + DiffieHellmanKey.genPublicKey(this.privateKey, this.randomPrime, this.primitiveGen);
 		try {
 			Socket csocket = new Socket(server, port);
 			this.sendMessege(csocket, msg);

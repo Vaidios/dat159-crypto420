@@ -1,6 +1,4 @@
 package no.hvl.dat159.server;
-import no.hvl.dat159.KeyExchange.PrimeGenerator;
-
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -9,30 +7,44 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-import no.hvl.dat159.KeyExchange.PrimeGenerator;
+import no.hvl.dat159.KeyExchange.DiffieHellmanKey;
 import no.hvl.dat159.config.ServerConfig;
-import no.hvl.dat159.crypto.Vignere;
 
 
 public class TCPServer {
 
 	private ServerSocket ssocket;
+	private long privateKey;
+	private long clientPublicKey;
+	private int primitiveGen;
+	private long randomPrime;
 	
 	public TCPServer(int port) throws IOException {
 		ssocket = new ServerSocket(port);
+		this.privateKey = DiffieHellmanKey.genPrivateKey();
 	}
 	
 	public void socketlistener() {
 		
 		try {
+
 			System.out.println("[SERVER] -> Listening on port: "+ServerConfig.PORT);
-			
+
 			Socket socket = ssocket.accept();
 			
 			BufferedReader inmsg = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			DataOutputStream outmsg = new DataOutputStream(socket.getOutputStream());
 			String clientmsg = inmsg.readLine();
+			String[] param = clientmsg.split(" ");
+			this.randomPrime = Long.parseLong(param[0]);
+			this.primitiveGen = Integer.parseInt(param[1]);
+			this.clientPublicKey = Long.parseLong(param[2]);
+			
+			
 			System.out.println("\n[Messege from Client]: "+ clientmsg);
+			System.out.println("\n[randomPrime]: " + this.randomPrime);
+			System.out.println("\n[primitiveGen]: " + this.primitiveGen);
+			System.out.println("\n[clientPublicKey]: " + this.clientPublicKey);
 			System.out.println("\n[Decrypt messege]: ");
 			System.out.println("______________________________________");
 			String response = "HTTP/1.1 200 OK \\r\\n\\r\\n";
