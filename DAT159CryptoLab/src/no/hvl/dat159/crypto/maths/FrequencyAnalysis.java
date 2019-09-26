@@ -100,7 +100,8 @@ public class FrequencyAnalysis {
 		
 		DecimalFormat df = new DecimalFormat();
 		df.setMaximumFractionDigits(decimal);
-		n = Double.valueOf(df.format(n));
+		String form = df.format(n).replace(",", ".");
+		n = Double.valueOf(form);
 		
 		return n;
 	}
@@ -152,7 +153,7 @@ public class FrequencyAnalysis {
 					
 					pix += pi*freqxplusg;
 				}catch(NullPointerException e) {
-					//
+					//System.out.println("nullPntrException");
 				}			
 
 			}

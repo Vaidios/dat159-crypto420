@@ -18,8 +18,8 @@ class VignereTest {
 	@Test
 	void test() {
 
-		String message = "These are english letters";
-		char[] keys = "JOY".toCharArray();
+		String message = "THESEAREENGLISHLETTERS";
+		String keys = "JOY";
 		
 		Vignere vg = new Vignere(keys);
 		String ecipher = vg.encrypt(message);
@@ -27,9 +27,9 @@ class VignereTest {
 
 		
 		System.out.println(ecipher);
-		
-		assertArrayEquals(message.toCharArray(), dmessage.toCharArray());
-				
+		System.out.println(dmessage);
+		assertArrayEquals(message.toUpperCase().toCharArray(), dmessage.toCharArray());
+		System.out.println("[Unit-Test] Succes");
 		
 	}
 

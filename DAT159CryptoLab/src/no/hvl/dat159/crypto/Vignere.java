@@ -3,31 +3,44 @@
  */
 package no.hvl.dat159.crypto;
 
+import no.hvl.dat159.client.HttpClient;
+import no.hvl.dat159.config.ServerConfig;
+
 /**
  * @author tdoy
  *
  */
 public class Vignere {
 	
-	private char[][] encoder;			// encryption array
-	private char[][] decoder;			// decryption array
+	private char[] key;
 	/**
 	 * 
 	 */
-	public Vignere(char[] key) {
-		
-		// implement me
-		
+	public static void main(String[] args) {
+		String key = "BITTERLEMON";
+		Vignere c = new Vignere(key);
+		System.out.println(c.encrypt("CHUJANIEWAFLA"));
+		System.out.println(c.decrypt("CHUJANIEWAFLA"));
 	}
 	
-	/**
-	 * 
-	 * @param plaintext
-	 * @return
-	 */
+	
+	public Vignere(String key) {
+		this.key = key.toCharArray();
+	}
+	
+	
 	public String encrypt(String plaintext) {
 		
-		return operation(plaintext, encoder);
+		String result = "";
+		
+		char[] text = plaintext.toUpperCase().toCharArray();
+		for(int i = 0; i < text.length; i++) {
+			char Mi = text[i];
+			char Ki = this.key[i % this.key.length];
+			char Ci = (char) (((Mi + Ki - 2 * 'A') % 26) + 'A');
+			result += Ci;
+		}
+		return result;
 	}
 	
 	/**
@@ -36,8 +49,15 @@ public class Vignere {
 	 * @return
 	 */
 	public String decrypt(String ciphertext) {
-		
-		return operation(ciphertext, decoder);
+		String result = "";
+		char[] text = ciphertext.toUpperCase().replaceAll(" ", "").toCharArray();
+		for(int i = 0; i < text.length; i++) {
+			char Ci = text[i];
+			char Ki = this.key[i % this.key.length];
+			char Mi = (char) ((Ci - Ki + 26) % 26 + 'A');
+			result += Mi;
+		}
+		return result;
 	}
 	
 	/**
@@ -46,25 +66,20 @@ public class Vignere {
 	 * @param code
 	 * @return
 	 */
-	private String operation(String input, char[][] code) {
-		
-		// implement me
-				
-		return null;
-	}
 
 	/**
 	 * @return the encoder
 	 */
-	public char[][] getEncoder() {
-		return encoder;
-	}
+//	public char[] getEncoder() {
+//		return encoder;
+//	}
+//
+//	/**
+//	 * @return the decoder
+//	 */
+//	public char[] getDecoder() {
+//		return decoder;
+//	}
 
-	/**
-	 * @return the decoder
-	 */
-	public char[][] getDecoder() {
-		return decoder;
-	}
-
+	
 }

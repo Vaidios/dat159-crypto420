@@ -63,26 +63,23 @@ class FrequencyAnalysisTest {
 
 		// 
 		int maxkey = 8;
+		String cipherTxt = ciphertext4;
 		for(int key=4; key<=maxkey; key++) {
 			StringBuffer keysb = new StringBuffer();
 			for(int i=0; i<key; i++) {
-				String yi = FrequencyAnalysis.reduceToMonoAlphabetic(key, i, ciphertext1);
+				String yi = FrequencyAnalysis.reduceToMonoAlphabetic(key, i, cipherTxt);
 				List<Double> freqyi = FrequencyAnalysis.keyFromMonoAlphabeticRow(yi);
 				keysb.append(FrequencyAnalysis.closestToStandardIc(freqyi));
 			}
 			System.out.println("Guessed key = "+keysb.toString().trim());
 			
 			// try to decrypt using the guessed key and the your Vigenere cipher
-			char[] keys = keysb.toString().trim().toCharArray();
+			String keys = keysb.toString().trim();
 			
 			Vignere vg = new Vignere(keys);
-			String plaintext = vg.decrypt(ciphertext1);
+			String plaintext = vg.decrypt(cipherTxt);
 			System.out.println(plaintext);
 		}
-		
-		
-		// assertEquals();
-		
 	}
 
 }

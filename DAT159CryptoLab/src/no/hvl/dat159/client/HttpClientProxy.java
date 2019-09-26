@@ -9,6 +9,8 @@ import java.net.Proxy;
 import java.net.SocketAddress;
 import java.net.URL;
 
+import javax.net.ssl.HttpsURLConnection;
+
 import no.hvl.dat159.config.ProxyConfig;
 import no.hvl.dat159.config.ServerConfig;
 
