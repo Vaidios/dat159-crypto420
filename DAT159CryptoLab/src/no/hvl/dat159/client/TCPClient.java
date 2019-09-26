@@ -30,6 +30,11 @@ public class TCPClient {
 		try {
 			Socket csocket = new Socket(server, port);
 			
+			
+			
+			
+			
+			
 			PrintWriter outmsg = new PrintWriter(csocket.getOutputStream(), true);
 			BufferedReader inmsg = new BufferedReader(new InputStreamReader(csocket.getInputStream()));
 			System.out.println("______________________________________");

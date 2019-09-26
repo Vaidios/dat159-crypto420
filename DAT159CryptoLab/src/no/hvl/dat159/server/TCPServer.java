@@ -1,4 +1,5 @@
 package no.hvl.dat159.server;
+import no.hvl.dat159.KeyExchange.PrimeGenerator;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -7,6 +8,7 @@ import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import no.hvl.dat159.KeyExchange.PrimeGenerator;
 import no.hvl.dat159.config.ServerConfig;
 import no.hvl.dat159.crypto.Vignere;
 
@@ -22,8 +24,9 @@ public class TCPServer {
 	public void socketlistener() {
 		
 		try {
-			
+			PrimeGenerator.Primes();
 			System.out.println("[LISTENIG] "+ServerConfig.PORT);
+			
 			Socket socket = ssocket.accept();
 			
 			BufferedReader inmsg = new BufferedReader(new InputStreamReader(socket.getInputStream()));
