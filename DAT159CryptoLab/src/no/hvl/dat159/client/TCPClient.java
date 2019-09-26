@@ -39,6 +39,13 @@ public class TCPClient {
 			this.sendMessege(csocket, msg);
 			String response = this.getResponse(csocket);
 			csocket.close();
+			csocket = new Socket(server, port);
+			long serverPublicKey = extractServerPublicKey(response);
+			long secret = DiffieHellmanKey.genSharedSecret(serverPublicKey, this.privateKey, this.randomPrime);
+			this.sendMessege(csocket, Long.toString(secret));
+			
+			
+			csocket.close();
 			
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -70,13 +77,22 @@ public class TCPClient {
 					System.out.println(httpHeader);
 					System.out.println(messege);
 				}
-				inmsg.close();
+//				inmsg.close();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		}
 		return null;
 	}
+	
+	public long extractServerPublicKey(String response) {
+		int beginIndex = response.lastIndexOf("PrivateKey: ");
+		int endIndex = response.indexOf("\n",beginIndex);
+		
+		return Long.parseLong(response.substring(beginIndex, endIndex));
+		
+	}
+	
 	
 	public static void main(String[] args) {
 //		Timer timer = new Timer();

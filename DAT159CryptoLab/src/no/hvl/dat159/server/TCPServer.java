@@ -16,6 +16,7 @@ public class TCPServer {
 	private ServerSocket ssocket;
 	private long privateKey;
 	private long clientPublicKey;
+	private long publicKey;
 	private int primitiveGen;
 	private long randomPrime;
 	
@@ -28,7 +29,7 @@ public class TCPServer {
 		
 		try {
 
-			System.out.println("[SERVER] -> Listening on port: "+ServerConfig.PORT);
+			System.out.println("[SERVER] -> Listening on port: " + ServerConfig.PORT);
 
 			Socket socket = ssocket.accept();
 			
@@ -39,7 +40,8 @@ public class TCPServer {
 			this.randomPrime = Long.parseLong(param[0]);
 			this.primitiveGen = Integer.parseInt(param[1]);
 			this.clientPublicKey = Long.parseLong(param[2]);
-			
+			this.publicKey = DiffieHellmanKey.genPublicKey(this.privateKey, this.randomPrime, this.primitiveGen);
+			long secret = DiffieHellmanKey.genSharedSecret(this.clientPublicKey, this.privateKey, this.randomPrime );
 			
 			System.out.println("\n[Messege from Client]: "+ clientmsg);
 			System.out.println("\n[randomPrime]: " + this.randomPrime);
@@ -47,8 +49,16 @@ public class TCPServer {
 			System.out.println("\n[clientPublicKey]: " + this.clientPublicKey);
 			System.out.println("\n[Decrypt messege]: ");
 			System.out.println("______________________________________");
-			String response = "HTTP/1.1 200 OK \\r\\n\\r\\n";
+			String response = "HTTP/1.1 200 OK \r\n\r\n";
+			response += "Public-key: " + this.publicKey;
 			this.sendMessege(socket, response);
+			
+			
+			clientmsg = inmsg.readLine();
+			System.out.println("Secrets: " + secret + " " + clientmsg);
+			
+			
+			
 			inmsg.close();
 			outmsg.close();
 			
